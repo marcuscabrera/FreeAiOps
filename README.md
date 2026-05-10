@@ -1,69 +1,67 @@
-# FreeAiOps - 智能运维 自动化运维
-智能运维、自动化运维、大模型运维、aiops、Zabbix、Prometheus、Grafana、Nagios、ELK Stack（Elasticsearch、Logstash、Kibana）、Graylog、Ansible、SaltStack、Puppet、Chef、Terraform、Docker、Kubernetes、OpenShift、Jenkins、MySQL、PostgreSQL、MariaDB、Redis、MongoDB、InfluxDB、Ceph、MinIO，RabbitMQ、Kafka、NATS、Apache Pulsar、Nginx、Apache HTTP Server、HAProxy、Traefik、Caddy、OpenStack、OpenLDAP、FreeRDP，🚀 **FreeAiOps** 是一个基于大模型的智能运维（AIOps）开源项目，旨在通过人工智能技术革新传统运维模式，实现自动化、智能化的运维管理，工具涵盖了IT运维中的监控、日志、自动化、容器化、安全、网络等多个领域，欢迎一起探讨，沉淀更多场景，促进运维to运营，为IT运维找到新出路!!!!!!!
+# FreeAiOps - Operações Inteligentes e Automação de Operações
 
-## 🌟 项目愿景  
+Operações inteligentes, automação de operações, operações com grandes modelos de linguagem, aiops, Zabbix, Prometheus, Grafana, Nagios, ELK Stack (Elasticsearch, Logstash, Kibana), Graylog, Ansible, SaltStack, Puppet, Chef, Terraform, Docker, Kubernetes, OpenShift, Jenkins, MySQL, PostgreSQL, MariaDB, Redis, MongoDB, InfluxDB, Ceph, MinIO, RabbitMQ, Kafka, NATS, Apache Pulsar, Nginx, Apache HTTP Server, HAProxy, Traefik, Caddy, OpenStack, OpenLDAP, FreeRDP.
 
-FreeAiOps 致力于构建一个 **开放、高效、易用** 的 AIOps 平台，利用大模型（LLM）技术赋能运维行业，帮助企业和开发者：  
-✔ **自动化运维** - 减少人工干预，提升运维效率
-✔ **智能故障预测** - 提前发现潜在问题，降低业务风险  
-✔ **根因分析（RCA）** - 快速定位问题根源，缩短故障恢复时间  
-✔ **可观测性增强** - 结合日志、指标、链路数据，提供深度分析  
-✔ **自然语言交互** - 通过对话式 AI 简化运维操作  
+🚀 **FreeAiOps** é um projeto open source de Operações Inteligentes (AIOps) baseado em grandes modelos de linguagem, com o objetivo de revolucionar os modelos tradicionais de operações através de tecnologias de inteligência artificial,實現 automação e operações inteligentes. A ferramenta cobre diversas áreas da TI, como monitoramento, logs, automação, conteinerização, segurança e redes. Venha trocar ideias conosco, acumular mais cases de uso, impulsionar operações para operações, e encontrar um novo caminho para a TI!!!!!!!
 
-## 🔥 核心特性  
+## 🌟 Visão do Projeto
 
-- **大模型驱动**：集成 LLM（如 GPT、LLaMA 等），实现智能问答、日志分析、异常检测  
-- **全栈可观测性**：支持日志（Log）、指标（Metric）、追踪（Trace）的智能分析  
-- **自动化运维**：提供智能告警、自愈脚本、自动化任务编排  
-- **开放架构**：插件化设计，兼容 Prometheus、Elasticsearch、Grafana 等主流工具  
-- **低代码/无代码**：通过自然语言即可配置运维策略，降低使用门槛  
+O FreeAiOps se dedica a construir uma plataforma AIOps **aberta, eficiente e fácil de usar**, utilizando tecnologias de grandes modelos de linguagem (LLM) para empoderar a indústria de operações, ayudando empresas e desenvolvedores a:
 
-## 🔥 当前已商用的模块：
-- **IT HelpDesk**：集成 LLM大模型呼叫中心系统，对接内部知识库，服务公司内部员工，如解答常见问题：电脑如何加域，电脑上不了网了，怎么申请邮箱等；
-- **IT 运维助手**：IM运维助手机器人，将最佳实践、常见问题的知识库内容给大模型呼叫中心系统，形成运维专用助手，从而在修改如交换机配置时，能快速看到最佳实践，并与大模型聊天，获得命令的参考；
-- **应用巡检**：Zabbix等监控软件，毕竟只能检测到机器的网络、存储等基础信息以及部分应用的状况，而对上层应用来说，只能通过页面点击，确认产品是否有bug，因此，页面点击、确认业务运行状态，是很有必要的。我们采用流程自动化技术，解决该问题，目前已得到运营商客户的生产环境使用，效果显著，已实现30分钟关键业务的自动化巡检，一旦出现关键问题，调用IT Helpdesk进行IP电话系统的拨打，拨打对应IT技术人员。 
+✔ **Operações Automatizadas** - Reduzir intervenção manual e melhorar a eficiência operacional
+✔ **Previsão Inteligente de Falhas** - Detectar problemas potenciais antecipadamente e reduzir riscos de negócios
+✔ **Análise de Causa Raiz (RCA)** - Localizar rapidamente a raiz dos problemas e reduzir o tempo de recuperação
+✔ **Observabilidade Aprimorada** - Combinar logs, métricas e dados de rastreamento para fornecer análise profunda
+✔ **Interação em Linguagem Natural** - Simplificar operações de TI através de IA conversacional
 
- **目前仍在实现“高危指令预警”、“故障自愈”、“故障修复辅助”的路上！** 
+## 🔥 Funcionalidades Principais
 
-## 🛠️ 技术栈：golang python vue JavaScript Java Mysql PG
-<!--
-- **后端**：Python/Go + FastAPI/Gin  
-- **AI 引擎**：PyTorch/TensorFlow + HuggingFace/LLaMA  
-- **数据处理**：Flink/Spark + Elasticsearch  
-- **前端**：React/Vue + ECharts  
-- **部署**：Docker + Kubernetes  
--->
+- **Motor de Grandes Modelos**: Integração com LLMs (como GPT, LLaMA, etc.) para问答 inteligente, análise de logs e detecção de anomalias
+- **Observabilidade Full Stack**: Suporte para análise inteligente de logs (Log), métricas (Metric) e rastreamento (Trace)
+- **Operações Automatizadas**: Fornecimento de alertas inteligentes, scripts de auto-recuperação e orquestração de tarefas automatizadas
+- **Arquitetura Aberta**: Design plugin que é compatível com ferramentas principais como Prometheus, Elasticsearch e Grafana
+- **Low Code/No Code**: Configure estratégias operacionais através de linguagem natural, reduzindo a curva de aprendizado
 
-## 🚀 快速开始  
+## 🔥 Módulos já em uso comercial:
+- **IT HelpDesk**: Sistema de central de atendimento com integração de grandes modelos de linguagem, conectado a base de conhecimento interna, atendendo funcionários da empresa, como responder dúvidas comuns: como adicionar ao domínio, computador sem internet, como solicitar e-mail, etc.
+- **Assistente de Operações de TI**:robô de IM assistente de operações, disponibilizando o conteúdo da base de conhecimento de melhores práticas e dúvidas frequentes para o sistema de central de atendimento com grandes modelos de linguagem, formando um assistente dedicado para operações, permitindo que ao modificar configurações de switch, seja possível visualizar rapidamente as melhores práticas e conversar com o grande modelo de linguagem para obter referências de comandos.
+- **Inspeção de Aplicativos**: Software de monitoramento como Zabbix, que só consegue detectar informações básicas de rede e armazenamento dos servidores, além do estado de alguns aplicativos. Para aplicativos de camada superior, só é possível confirmar se o produto possui bugs através de cliques na página. Portanto, clicar nas páginas e confirmar o estado operacional do negócio são muito necessários. Utilizamos tecnologia de automação de processos para resolver este problema. Atualmente,已在运营商客户的生产环境使用, com efeitos significativos. Já实现了30分钟关键业务的自动化巡检，一旦出现关键问题，调用IT Helpdesk进行IP电话系统的拨打，拨打对应IT技术人员。
+
+**仍在实现"高危指令预警"、"故障自愈"、"故障修复辅助"的路上！**
+
+## 🛠️ Pilha de Tecnologia: Golang, Python, Vue, JavaScript, Java, MySQL, PostgreSQL
+
+## 🚀 Comece Rápido
 
 ```bash
-# 克隆项目
+# Clonar o projeto
 git clone https://github.com/FreeAiOps/FreeAiOps.git
 cd FreeAiOps
 
-# 启动服务（示例）
+# Iniciar serviços (exemplo)
 docker-compose up -d
-```  
+```
 
-📖 详细部署文档请见 [部署指南，在编写ing](./docs/INSTALL.md)  
+📖 Para guia detalhado de implantação, consulte [Guia de Instalação, em elaboração](./docs/INSTALL.md)
 
-## 🤝 参与贡献  
+## 🤝 Contribua
 
-FreeAiOps 是一个 **开源项目**，欢迎所有开发者、运维工程师和 AI 爱好者加入！  
-- 提交 Issue：报告 Bug 或提出新功能建议  
-- 提交 PR：修复问题或贡献代码  
-- 完善文档：帮助改进使用指南  
+O FreeAiOps é um **projeto open source** e damos as boas-vindas a todos os desenvolvedores, engenheiros de operações e entusiastas de IA!
+- Envie Issues: Reportar bugs ou sugerir novas funcionalidades
+- Envie PRs: Corrigir problemas ou contribuir com código
+- Melhore a documentação: Ajude a melhorar os guias de uso
 
-## 📜 开源协议  
+## 📜 Licença
 
-FreeAiOps 采用 **Apache License 2.0**，可自由用于商业和个人项目。  
+O FreeAiOps utiliza a licença **Apache License 2.0**, podendo ser livremente usado em projetos comerciais e pessoais.
 
-## 📞 联系我们  
+## 📞 Entre em Contato
 
-- 💬 微信：freeaiclub
-- 📞 电话：+86-15700176897 
+- 💬 WeChat: freeaiclub
+- 📞 Telefone: +86-15700176897
+
 ![image](https://github.com/user-attachments/assets/07a865f0-325c-4405-8038-f2199fee4aa3)
 
 ---
 
-✨ **让 AI 改变运维，让运维更智能！** ✨
+✨ **Deixe a IA transformar as operações, tornando as operações mais inteligentes!** ✨
