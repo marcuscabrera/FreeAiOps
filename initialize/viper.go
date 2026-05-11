@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/gin-gonic/gin"
@@ -13,6 +14,11 @@ import (
 
 // Viper //
 // 优先级: 命令行 > 环境变量 > 默认值
+// Suporta variáveis de ambiente para Docker:
+// - DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
+// - JWT_SIGNING_KEY, JWT_EXPIRES_TIME
+// - APP_PORT, APP_DOMAIN
+// - LOG_LEVEL, LOG_FORMAT
 func Viper(path ...string) *viper.Viper {
 	var cfg string
 
@@ -70,5 +76,62 @@ func Viper(path ...string) *viper.Viper {
 		fmt.Println(err)
 	}
 
+	// Aplicar variáveis de ambiente (sobrescreve valores do arquivo de config)
+	applyEnvironmentOverrides(v)
+
 	return v
+}
+
+// applyEnvironmentOverrides aplica variáveis de ambiente sobre a configuração
+func applyEnvironmentOverrides(v *viper.Viper) {
+	// Configurações do Banco de Dados
+	if envVal := os.Getenv("DB_HOST"); envVal != "" {
+		v.Set("mysql.path", envVal)
+	}
+	if envVal := os.Getenv("DB_PORT"); envVal != "" {
+		v.Set("mysql.port", envVal)
+	}
+	if envVal := os.Getenv("DB_NAME"); envVal != "" {
+		v.Set("mysql.db-name", envVal)
+	}
+	if envVal := os.Getenv("DB_USER"); envVal != "" {
+		v.Set("mysql.username", envVal)
+	}
+	if envVal := os.Getenv("DB_PASSWORD"); envVal != "" {
+		v.Set("mysql.password", envVal)
+	}
+
+	// Configurações JWT
+	if envVal := os.Getenv("JWT_SIGNING_KEY"); envVal != "" {
+		v.Set("jwt.signing-key", envVal)
+	}
+	if envVal := os.Getenv("JWT_EXPIRES_TIME"); envVal != "" {
+		v.Set("jwt.expires-time", envVal)
+	}
+
+	// Configurações da Aplicação
+	if envVal := os.Getenv("APP_PORT"); envVal != "" {
+		v.Set("domain", envVal) // Ou criar campo específico
+	}
+	if envVal := os.Getenv("APP_DOMAIN"); envVal != "" {
+		v.Set("domain", envVal)
+	}
+
+	// Configurações de Log
+	if envVal := os.Getenv("LOG_LEVEL"); envVal != "" {
+		v.Set("zap.level", envVal)
+	}
+	if envVal := os.Getenv("LOG_FORMAT"); envVal != "" {
+		v.Set("zap.format", envVal)
+	}
+
+	// Configurações Admin
+	if envVal := os.Getenv("ADMIN_AUTH"); envVal != "" {
+		v.Set("admin.auth", strings.ToLower(envVal) == "true")
+	}
+
+	// Atualiza a configuração global
+	if err := v.Unmarshal(&config.GVA_CONFIG); err != nil {
+		fmt.Printf("Erro ao aplicar variáveis de ambiente: %v\n", err)
+	}
 }

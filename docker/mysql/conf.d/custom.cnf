@@ -1,0 +1,34 @@
+# ============================================================================
+# Configurações Personalizadas do MySQL
+# ============================================================================
+
+[mysqld]
+# Codificação padrão
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+
+# Tamanho máximo de pacotes
+max_allowed_packet = 64M
+
+# Configurações de InnoDB
+innodb_buffer_pool_size = 256M
+innodb_log_file_size = 64M
+innodb_flush_log_at_trx_commit = 2
+innodb_flush_method = O_DIRECT
+
+# Configurações de logs
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 2
+
+# Timezone
+default-time-zone = '+00:00'
+
+#严格模式
+sql_mode = STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+
+[client]
+default-character-set = utf8mb4
+
+[mysql]
+default-character-set = utf8mb4

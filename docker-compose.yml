@@ -1,0 +1,201 @@
+# ============================================================================
+# Docker Compose - FreeAiOps
+# ============================================================================
+# Serviços: MySQL Database + Go Application
+#
+# Uso: docker-compose up -d
+# Logs: docker-compose logs -f
+# Parar: docker-compose down
+# ============================================================================
+
+version: '3.8'
+
+# Configuração padrão para todos os serviços
+x-common-env: &common-env
+  TZ: America/Sao_Paulo
+
+services:
+  # ---------------------------------------------------------------------
+  # Banco de Dados MySQL
+  # ---------------------------------------------------------------------
+  mysql:
+    image: mysql:8.0
+    container_name: freeaiops-mysql
+    restart: unless-stopped
+
+    # Configurações de ambiente (substitua em .env)
+    environment:
+      <<: *common-env
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-freeaiops}
+      MYSQL_USER: ${DB_USER:-freeaiops}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-freeaiops123}
+
+    # Portas: 3306 (MySQL), 33060 (X Protocol)
+    ports:
+      - "${DB_PORT:-3306}:3306"
+
+    # Volumes para persistência de dados
+    volumes:
+      # Persistência do banco de dados
+      - mysql_data:/var/lib/mysql
+      # Arquivos de configuração do MySQL
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d:ro
+      # Scripts de inicialização
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+
+    # Configurações de saúde
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-rootpassword}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+    # Configurações de recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+
+    # Redes
+    networks:
+      - freeaiops-network
+
+    # Configurações de reinício
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------
+  # Aplicação Go (FreeAiOps)
+  # ---------------------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: freeaiops/app:latest
+    container_name: freeaiops-app
+    restart: unless-stopped
+
+    # Variáveis de ambiente
+    environment:
+      <<: *common-env
+      # Configuração do banco de dados
+      DB_HOST: mysql
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${DB_NAME:-freeaiops}
+      DB_USER: ${DB_USER:-freeaiops}
+      DB_PASSWORD: ${DB_PASSWORD:-freeaiops123}
+      # Configuração JWT
+      JWT_SIGNING_KEY: ${JWT_SIGNING_KEY:-freeaiops-secret-key-change-in-production}
+      JWT_EXPIRES_TIME: ${JWT_EXPIRES_TIME:-604800000}
+      # Configuração da aplicação
+      APP_PORT: ${APP_PORT:-8080}
+      APP_DOMAIN: ${APP_DOMAIN:-localhost}
+      # Configuração de logs
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      LOG_FORMAT: ${LOG_FORMAT:-json}
+      # Admin
+      ADMIN_AUTH: ${ADMIN_AUTH:-true}
+
+    # Portas
+    ports:
+      - "${APP_PORT:-8080}:8080"
+
+    # Volumesexternos/montados
+    volumes:
+      # Persistência de logs
+      - app_logs:/app/log
+
+    # Dependência do banco de dados (espera MySQL estar pronto)
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+    # Configurações de saúde
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    # Configurações de recursos
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+    # Redes
+    networks:
+      - freeaiops-network
+
+    # Configurações de reinício
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------
+  # PhpMyAdmin (Opcional - Interface Web do MySQL)
+  # ---------------------------------------------------------------------
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2.1
+    container_name: freeaiops-phpmyadmin
+    restart: unless-stopped
+
+    environment:
+      <<: *common-env
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      PMA_ARBITRARY: 0
+
+    ports:
+      - "${PHPMYADMIN_PORT:-8081}:80"
+
+    volumes:
+      - ./docker/phpmyadmin/sessions:/sessions
+
+    depends_on:
+      - mysql
+
+    networks:
+      - freeaiops-network
+
+    restart: unless-stopped
+    profiles:
+      - tools
+
+# ---------------------------------------------------------------------
+# Redes
+# ---------------------------------------------------------------------
+networks:
+  freeaiops-network:
+    driver: bridge
+    name: freeaiops-network
+
+# ---------------------------------------------------------------------
+# Volumes
+# ---------------------------------------------------------------------
+volumes:
+  # Dados do MySQL (persistente)
+  mysql_data:
+    driver: local
+    name: freeaiops-mysql-data
+
+  # Logs da aplicação (persistente)
+  app_logs:
+    driver: local
+    name: freeaiops-app-logs
+
+# ---------------------------------------------------------------------
+# Configurações de restart padrão
+# ---------------------------------------------------------------------
+# restart: unless-stopped (aplicado nos serviços)
+# restart: on-failure:3 (alternativa para desenvolvimento)

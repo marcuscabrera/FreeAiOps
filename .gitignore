@@ -1,3 +1,15 @@
 .idea
 bin
 log
+
+# Docker
+.env
+.env.local
+.env.*.local
+docker/mysql/data/
+*.tar
+*.tar.gz
+
+# Build
+freeaiops
+migrate
